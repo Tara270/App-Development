@@ -1,0 +1,145 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const CalculatorApp());
+}
+
+class CalculatorApp extends StatelessWidget {
+  const CalculatorApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Simple Calculator',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: const CalculatorHomePage(),
+    );
+  }
+}
+
+class CalculatorHomePage extends StatefulWidget {
+  const CalculatorHomePage({Key? key}) : super(key: key);
+
+  @override
+  State<CalculatorHomePage> createState() => _CalculatorHomePageState();
+}
+
+class _CalculatorHomePageState extends State<CalculatorHomePage> {
+  final TextEditingController _controller1 = TextEditingController();
+  final TextEditingController _controller2 = TextEditingController();
+
+  double? _result;
+  String _errorMessage = '';
+
+  void _calculate(String operation) {
+    setState(() {
+      _errorMessage = '';
+      double? num1 = double.tryParse(_controller1.text);
+      double? num2 = double.tryParse(_controller2.text);
+
+      if (num1 == null || num2 == null) {
+        _errorMessage = 'Please enter valid numbers';
+        _result = null;
+        return;
+      }
+
+      switch (operation) {
+        case '+':
+          _result = num1 + num2;
+          break;
+        case '-':
+          _result = num1 - num2;
+          break;
+        case '*':
+          _result = num1 * num2;
+          break;
+        case '/':
+          if (num2 == 0) {
+            _errorMessage = 'Cannot divide by zero';
+            _result = null;
+          } else {
+            _result = num1 / num2;
+          }
+          break;
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller1.dispose();
+    _controller2.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Simple Calculator')),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            TextField(
+              controller: _controller1,
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
+              decoration: const InputDecoration(
+                labelText: 'Enter first number',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _controller2,
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
+              decoration: const InputDecoration(
+                labelText: 'Enter second number',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton(
+                  onPressed: () => _calculate('+'),
+                  child: const Text('+'),
+                ),
+                ElevatedButton(
+                  onPressed: () => _calculate('-'),
+                  child: const Text('-'),
+                ),
+                ElevatedButton(
+                  onPressed: () => _calculate('*'),
+                  child: const Text('*'),
+                ),
+                ElevatedButton(
+                  onPressed: () => _calculate('/'),
+                  child: const Text('/'),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+            if (_errorMessage.isNotEmpty)
+              Text(
+                _errorMessage,
+                style: const TextStyle(color: Colors.red, fontSize: 18),
+              ),
+            if (_result != null)
+              Text(
+                'Result: $_result',
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
