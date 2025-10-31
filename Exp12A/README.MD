@@ -85,7 +85,4 @@ Optionally, Google Sign-In functionality.
 
 Result
 
-
 Successfully developed a Flutter app integrated with Firebase Authentication to perform user sign-up, login, and logout, and manage session states securely.
-
-
