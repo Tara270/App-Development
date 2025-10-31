@@ -1,4 +1,4 @@
-Experiment 11A: Firebase Authentication App using Flutter
+Experiment 12A: Firebase Authentication App using Flutter
 
 Aim
 To implement user authentication with Firebase.
@@ -84,5 +84,6 @@ Protected Dashboard visible only to authenticated users.
 Optionally, Google Sign-In functionality.
 
 Result
+
 
 Successfully developed a Flutter app integrated with Firebase Authentication to perform user sign-up, login, and logout, and manage session states securely.
